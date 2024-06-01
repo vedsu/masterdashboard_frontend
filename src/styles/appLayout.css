@@ -1,0 +1,370 @@
+/*----------------------------HTML Elements Custom--------------------------------*/
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.side-nav {
+  grid-column: 1/2;
+  background: #25476a;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #faf9f6;
+}
+
+.side-nav-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.side-nav-item {
+  padding: 5px 0;
+  width: 100%;
+}
+
+.app-content {
+  grid-column-start: 2;
+  grid-column-end: 9;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px;
+  background: #fdfeff;
+}
+
+/*---------------------------Table-------------------------*/
+
+.p-column-header-content {
+  column-gap: 10px;
+}
+.table-header {
+  font-size: 14px;
+}
+.table-header-left {
+  padding-left: 24px;
+}
+.table-header-right {
+  padding-right: 24px;
+}
+.table-header-right .p-column-header-content {
+  justify-content: flex-end;
+}
+
+.p-datatable-tbody .p-datatable-emptymessage td {
+  text-align: center;
+}
+
+.app-table .p-datatable-header > div {
+  display: flex;
+  align-items: center;
+  padding: 24px 24px 0;
+  justify-content: flex-start;
+}
+
+.app-table .p-datatable-header .p-icon-field {
+  width: 25%;
+}
+
+.app-table .p-datatable-header .p-icon-field-left .p-input-icon {
+  margin: 0 5px;
+  transform: translate(-50%, -50%);
+}
+
+.app-table .p-datatable-header input {
+  width: 100%;
+  height: 40px;
+  padding: 2px 12px 0 32px;
+  border: 1px solid #e4e4e4;
+  outline: none;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.app-table .p-datatable-tbody td {
+  height: 48px;
+  font-size: 14px;
+}
+
+/*-----------------------------Paginator-----------------------*/
+.app-table .p-paginator-bottom {
+  font-size: 14px;
+}
+
+.p-paginator-bottom .p-inputwrapper-filled {
+  align-items: center;
+}
+.p-paginator-bottom .p-focus {
+  box-shadow: none;
+  outline: none;
+}
+.p-paginator-bottom .p-inputwrapper-filled .p-inputtext {
+  font-size: 14px;
+}
+
+/*--------------------Switch-------------------------------*/
+.status-switch ::before {
+  top: 11px;
+  width: 14px;
+  height: 14px;
+  border-radius: 12px;
+}
+
+/*-------------------------Input------------------------------*/
+
+input::placeholder,
+textarea::placeholder {
+  color: gray;
+}
+
+input:disabled,
+.content-disabled {
+  @apply bg-primary-light-100 text-secondary-sText;
+}
+
+.app-input:focus {
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
+.p-focus {
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
+
+.app-phn-input input {
+  padding: 0 8px;
+  font-size: 14px;
+  line-height: 1.25rem;
+  height: 32px;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  outline: none;
+}
+.app-phn-input select:focus,
+.app-phn-input input:focus {
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
+.app-phn-input .PhoneInputCountry {
+  margin: 0;
+  padding: 0 8px;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  column-gap: 10px;
+}
+.app-phn-input .PhoneInputCountrySelectArrow {
+  width: 8px;
+  height: 8px;
+}
+
+/*-------------------- Dropdown-------------------------------*/
+.p-dropdown {
+  border: 1px solid #e4e4e4;
+}
+.app-dropdown .p-dropdown {
+  width: 100%;
+}
+.app-dropdown .p-dropdown .p-dropdown-label {
+  font-size: 14px;
+  color: #212427;
+  text-align: left;
+  padding: 5px;
+}
+.app-dropdown .p-dropdown .p-placeholder {
+  color: gray;
+}
+.app-dropdown [data-p-disabled|="true"] {
+  background: #f5f5f7;
+}
+
+.p-dropdown-panel {
+  font-size: 14px;
+}
+.p-dropdown-panel
+  .p-dropdown-items
+  .p-dropdown-item:not(.p-highlight):not(.p-disabled).p-focus {
+  color: #212427;
+  background: #add0f4;
+}
+.p-dropdown-items .p-highlight {
+  color: #faf9f6;
+  background-color: #25476a;
+}
+.p-dropdown-items .p-dropdown-item {
+  padding: 5px 12px;
+}
+.p-dropdown-item {
+  outline: none;
+  box-shadow: none;
+}
+
+/*------------------Calendar-----------------------------*/
+.p-datepicker {
+  color: #212427;
+}
+.p-calendar .p-inputtext {
+  box-shadow: none;
+  outline: none;
+}
+.p-datepicker-header {
+  margin-bottom: 15px;
+}
+.p-datepicker-title {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+}
+.p-datepicker-prev,
+.p-datepicker-next {
+  width: 16px;
+  height: 16px;
+}
+.p-datepicker .p-highlight {
+  color: #faf9f6;
+  background-color: #25476a;
+}
+.p-datepicker .p-highlight:focus {
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
+.p-datepicker-calendar-container table {
+  font-size: 14px;
+}
+.p-datepicker-calendar-container table td {
+  text-align: center;
+  padding: 10px 0;
+}
+.p-datepicker-calendar-container table td span {
+  display: inline-flex;
+  align-items: center;
+}
+.p-datepicker-calendar-container table td span:hover {
+  background-color: #add0f4;
+}
+
+/* hover and focus for calendar */
+.p-monthpicker-month:hover,
+.p-yearpicker-year:hover {
+  color: #212427;
+  background: #add0f4;
+}
+.p-monthpicker-month:focus,
+.p-yearpicker-year:focus,
+.p-datepicker-prev:focus,
+.p-datepicker-next:focus,
+.p-datepicker-month:focus,
+.p-datepicker-year:focus,
+.p-datepicker-calendar-container table td span:focus {
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
+
+/*---------------------------Text Area--------------------------*/
+
+.description-box textarea:focus,
+.speaker-bio-box textarea:focus {
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
+
+/*-------------------------Check Box--------------------------------*/
+.p-checkbox-box {
+  @apply w-full h-full;
+}
+.p-checkbox-box[data-p-highlight="false"] {
+  background: transparent;
+}
+.p-checkbox-box[data-p-highlight="true"] {
+  background: #4f7ba7;
+}
+
+/*-----------------------------Dialog-----------------------------*/
+
+.p-dialog-header {
+  pointer-events: none;
+}
+
+.p-dialog-header-close:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.confirm-pop-up-delete .p-dialog-content,
+.confirm-pop-up-accept .p-dialog-content {
+  color: #212427;
+  column-gap: 10px;
+}
+
+.p-dialog .p-resizable-handle {
+  display: none;
+}
+
+.p-confirm-dialog-reject,
+.p-confirm-dialog-accept,
+.pop-up-btn-no,
+.pop-up-btn-yes {
+  width: 48px;
+  height: 24px;
+  margin: 0 10px;
+  border: 1px solid #b3b0b0;
+  border-radius: 6px;
+}
+
+.p-confirm-dialog-reject:hover,
+.pop-up-btn-no:hover {
+  @apply bg-primary-light-100;
+}
+
+.p-confirm-dialog-reject:focus,
+.confirm-pop-up-accept .p-confirm-dialog-accept:focus,
+.pop-up-btn-accept:focus,
+.pop-up-btn-no:focus,
+.pop-up-btn-yes:focus {
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
+
+.confirm-pop-up-accept .p-confirm-dialog-accept,
+.pop-up-btn-accept {
+  color: #faf9f6;
+  background: #25476a;
+  border: 1px solid #e4e4e4;
+}
+.confirm-pop-up-accept .p-confirm-dialog-accept:hover,
+.pop-up-btn-accept:hover {
+  background: #2d76c0;
+}
+
+.confirm-pop-up-delete .p-button-danger,
+.pop-up-btn-del {
+  color: #faf9f6;
+  background: #d64646;
+  border: 1px solid #dd4242;
+}
+.confirm-pop-up-delete .p-button-danger:hover,
+.pop-up-btn-del:hover {
+  background: #f30808;
+}
+
+/*--------------------------Toast Messages--------------------------*/
+.app-toast .p-toast-message-content {
+  padding: 10px;
+  column-gap: 10px;
+}
+.app-toast .p-toast-message {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+/*-----------------------Buttons---------------------------*/
+
+.login-btn,
+.submit-btn {
+  position: relative;
+  border: 1px solid #e4e4e4;
+}
+.login-btn:focus,
+.submit-btn:focus {
+  box-shadow: 0 0 0 0.1rem #add0f4;
+}
