@@ -159,7 +159,7 @@ const PageCreateCategory = () => {
       <Section className={`min-h-[400px]`}>
         <div className="mb-5 flex items-center justify-between">
           <div className="font-bold text-primary-pLabel">
-            <span>Industry</span>
+            <span>Industries</span>
           </div>
         </div>
 

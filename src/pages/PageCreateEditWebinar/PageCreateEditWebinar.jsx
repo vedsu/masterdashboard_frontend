@@ -638,8 +638,20 @@ const PageCreateEditWebinar = () => {
     <div>
       <div className="create-webinar-wrapper flex flex-col items-center gap-5">
         <div className="w-full flex items-center justify-between">
-          <div className="font-bold text-primary-pLabel">
-            {pageMode === PAGE_MODE.CREATE ? "Create Webinar" : "Edit Webinar"}
+          <div className="font-bold text-primary-pLabel ">
+            <button
+              className="inline-block mr-4 w-8 h-8 border rounded-[50%] text-center hover:bg-primary-light-100"
+              onClick={() => {
+                navigate(LINK_WEBINAR);
+              }}
+            >
+              <i className="pi pi-arrow-left"></i>
+            </button>
+            <span>
+              {pageMode === PAGE_MODE.CREATE
+                ? "Create Webinar"
+                : "Edit Webinar"}
+            </span>
           </div>
         </div>
 
