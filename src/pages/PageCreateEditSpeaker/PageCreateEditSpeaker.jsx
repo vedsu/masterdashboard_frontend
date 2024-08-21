@@ -38,12 +38,12 @@ const PageCreateSpeaker = () => {
   const [speakerInfo, setSpeakerInfo] = useState(initialSpeakerInfo);
   const [industryOptions, setIndustryOptions] = useState([]);
   const [submitBtnLoader, setSubmitBtnLoader] = useState(false);
-
   const pageMode = location.search.includes(PAGE_MODE.EDIT)
     ? PAGE_MODE.EDIT
     : PAGE_MODE.CREATE;
 
   const toast = useRef(null);
+  const phnInputRef = useRef(null);
 
   useEffect(() => {
     onMount();
@@ -212,11 +212,6 @@ const PageCreateSpeaker = () => {
   /*-------------------------Sectional Renders--------------------------------*/
 
   const renderSpeakerForm = () => {
-    // console.log(
-    //   speakerInfo.contact,
-    //   parsePhoneNumber(speakerInfo?.contact),
-    //   formatPhoneNumber(speakerInfo?.contact)
-    // );
     return (
       <React.Fragment>
         <div className="col-span-2">
@@ -261,15 +256,16 @@ const PageCreateSpeaker = () => {
           <div className="grid gap-2">
             <label>Contact*</label>
             <PhoneInput
+              ref={phnInputRef}
               className="app-phn-input gap-2 text-sm rounded-md"
               name={"contact"}
               country
               defaultCountry="IN"
               placeholder="Enter phone number"
               value={speakerInfo.contact}
-              onCountryChange={(country) => {
-                console.log(country);
-              }}
+              // onCountryChange={(country) => {
+              //   console.log(country);
+              // }}
               onChange={(val) => {
                 setSpeakerInfo((prev) => ({ ...prev, contact: val ?? "" }));
               }}
@@ -298,12 +294,11 @@ const PageCreateSpeaker = () => {
         <div className="speaker-bio-box col-span-3 grid gap-2">
           <label>Speaker Bio*</label>
           <InputTextarea
-            className="speaker-bio-box min-h-40 max-h-40 p-2 border border-primary-light-900 text-primary-pText text-sm"
+            className="speaker-bio-box min-h-[720px] p-2 border border-primary-light-900 text-primary-pText text-sm"
             name="speakerBio"
             placeholder="Enter bio"
             value={speakerInfo.speakerBio}
             onChange={handleChange}
-            maxLength={1000}
           />
           <small></small>
         </div>
@@ -325,10 +320,10 @@ const PageCreateSpeaker = () => {
   return (
     <div>
       <div className="create-webinar-wrapper flex flex-col items-center gap-5">
-        <div className="w-full flex items-center justify-between">
-          <div className="font-bold text-primary-pLabel">
+        <div className="w-full">
+          <div className="flex items-center gap-4 font-bold text-primary-pLabel">
             <button
-              className="inline-block mr-4 w-8 h-8 border rounded-[50%] text-center hover:bg-primary-light-100"
+              className="w-8 h-8 border rounded-[50%] text-center hover:bg-primary-light-100"
               onClick={() => {
                 navigate(LINK_SPEAKER);
               }}

@@ -9,7 +9,10 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import React, { useCallback, useEffect, useState } from "react";
 import Section from "../../components/Section";
 import OrderService from "../../services/OrderService";
-import { validateGetRequest } from "../../utils/commonUtils";
+import {
+  getInitialLetterUpperCase,
+  validateGetRequest,
+} from "../../utils/commonUtils";
 
 const PageOrderPanel = () => {
   const [tableData, setTableData] = useState([]);
@@ -32,7 +35,7 @@ const PageOrderPanel = () => {
     "orderdate",
     "webinardate",
     "topic",
-    "customername",
+    "paymentstatus",
     "customeremail",
     "orderamount",
   ];
@@ -59,7 +62,6 @@ const PageOrderPanel = () => {
 
   const getOrderInfo = async () => {
     setIsTableDataLoading(true);
-
     try {
       const res = await OrderService.getOrders();
       if (validateGetRequest(res)) {
@@ -113,13 +115,10 @@ const PageOrderPanel = () => {
   };
 
   const renderColOrderDate = (rowData) => {
-    return <div className="pl-6 text-left">{rowData?.orderdate}</div>;
-  };
-  const renderColWebinarDate = (rowData) => {
-    return <div className="text-left">{rowData?.webinardate}</div>;
+    return <div className="pl-6 text-left">{rowData?.orderdate ?? "N.A"}</div>;
   };
   const renderColTopic = (rowData) => {
-    return <div className="text-left">{rowData?.topic}</div>;
+    return <div className="w-72 text-left">{rowData?.topic ?? "N.A"}</div>;
   };
   const renderColSession = (rowData) => {
     return (
@@ -135,11 +134,15 @@ const PageOrderPanel = () => {
       </div>
     );
   };
-  const renderColName = (rowData) => {
-    return <div className="text-left">{rowData?.customername}</div>;
+  const renderColPaymentStatus = (rowData) => {
+    return (
+      <div className="text-left">
+        {getInitialLetterUpperCase(rowData?.paymentstatus) ?? "N.A"}
+      </div>
+    );
   };
   const renderColEmail = (rowData) => {
-    return <div className="text-left">{rowData?.customeremail}</div>;
+    return <div className="text-left">{rowData?.customeremail ?? "N.A"}</div>;
   };
   const renderColAmount = (rowData) => {
     return <div className="text-center">{rowData?.orderamount}</div>;
@@ -213,12 +216,6 @@ const PageOrderPanel = () => {
                   body={renderColOrderDate}
                 />
                 <Column
-                  field="webinardate"
-                  header="Webinar Date"
-                  headerClassName="h-12 table-header"
-                  body={renderColWebinarDate}
-                />
-                <Column
                   field="topic"
                   header="Topic"
                   headerClassName="h-12 table-header"
@@ -231,20 +228,20 @@ const PageOrderPanel = () => {
                   body={renderColSession}
                 />
                 <Column
-                  field="customername"
-                  header="Customer Name"
-                  headerClassName="h-12 table-header"
-                  body={renderColName}
-                />
-                <Column
                   field="customeremail"
                   header="Customer Email"
                   headerClassName="h-12 table-header"
                   body={renderColEmail}
                 />
                 <Column
+                  field="paymentstatus"
+                  header="Payment"
+                  headerClassName="h-12 table-header"
+                  body={renderColPaymentStatus}
+                />
+                <Column
                   field="orderamount"
-                  header="Order Amount (₹)"
+                  header="Order Amount ($)"
                   headerClassName="w-32 h-12 table-header"
                   body={renderColAmount}
                 />
@@ -320,7 +317,7 @@ const PageOrderPanel = () => {
                     <span>Customer Name</span>
                   </div>
                   <div>
-                    <span>{currentRowInfo?.customername ?? "-"}</span>
+                    <span>{currentRowInfo?.paymentstatus ?? "-"}</span>
                   </div>
                 </div>
 

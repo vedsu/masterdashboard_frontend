@@ -2,6 +2,7 @@ import { FilterMatchMode } from "primereact/api";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { Dropdown } from "primereact/dropdown";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputSwitch } from "primereact/inputswitch";
@@ -16,7 +17,7 @@ import { PAGE_MODE, statusEnum } from "../../constants/enums";
 import { LINK_CREATE_SPEAKER, LINK_EDIT_SPEAKER } from "../../routes";
 import SpeakerService from "../../services/SpeakerService";
 import {
-  validateDeleteRequest,
+  getInitialLetterUpperCase,
   validateGetRequest,
   validatePostRequest,
 } from "../../utils/commonUtils";
@@ -33,16 +34,23 @@ const PageSpeakerPanel = () => {
     email: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     contact: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     industry: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    status: { value: null, matchMode: FilterMatchMode.EQUALS },
   });
 
   const [currentRowInfo, setCurrentRowInfo] = useState(null);
 
   const [isStatusDialogVisible, setIsStatusDialogVisible] = useState(false);
-  const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
+  const [isSpeakerPreviewVisible, setIsSpeakerPreviewVisible] = useState(false);
 
   const toast = useRef(null);
 
-  const globalFilterFieldsStructure = ["name", "email", "contact", "industry"];
+  const globalFilterFieldsStructure = [
+    "name",
+    "email",
+    "contact",
+    "industry",
+    "status",
+  ];
 
   const onMount = useCallback(async () => {
     getSpeakerInfo();
@@ -93,32 +101,6 @@ const PageSpeakerPanel = () => {
     }
   };
 
-  const deleteSpeaker = async () => {
-    try {
-      const res = await SpeakerService.deleteSpeaker(
-        `${currentRowInfo?.id ? `/${currentRowInfo?.id}` : ""}`
-      );
-      if (validateDeleteRequest(res)) {
-        getSpeakerInfo();
-        setIsDeleteDialogVisible(false);
-        toast.current.show({
-          severity: "success",
-          summary: "Deleted",
-          detail: "Speaker deleted successfully",
-          life: 2000,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      toast.current.show({
-        severity: "error",
-        summary: "Unable to delete",
-        detail: "Try again",
-        life: 2000,
-      });
-    }
-  };
-
   /*----------------------------------Event Handlers---------------------------- */
 
   const onGlobalFilterChange = (e) => {
@@ -142,20 +124,16 @@ const PageSpeakerPanel = () => {
     navigate(`${LINK_EDIT_SPEAKER}/${rowData.id}?mode=${PAGE_MODE.EDIT}`);
   };
 
-  const onDeleteSpeaker = (e, rowData) => {
-    setIsDeleteDialogVisible(true);
+  const onPreviewSpeaker = (e, rowData) => {
+    setIsSpeakerPreviewVisible(true);
     setCurrentRowInfo(rowData);
-  };
-
-  const onAcceptDeleteSpeaker = async () => {
-    await deleteSpeaker();
   };
 
   const hideStatusDialog = () => {
     setIsStatusDialogVisible(false);
   };
-  const hideDeleteDialog = () => {
-    setIsDeleteDialogVisible(false);
+  const hideSpeakerPreviewDialog = () => {
+    setIsSpeakerPreviewVisible(false);
   };
 
   /* table col body jsx */
@@ -174,17 +152,56 @@ const PageSpeakerPanel = () => {
     );
   };
   const renderColName = (rowData) => {
-    return <div className="pl-6 text-left">{rowData.name}</div>;
+    return (
+      <div
+        className="pl-6 text-left"
+        title={getInitialLetterUpperCase(rowData?.name)}
+      >
+        {getInitialLetterUpperCase(rowData?.name) ?? "-"}
+      </div>
+    );
   };
   const renderColEmail = (rowData) => {
-    return <div className="text-left">{rowData.email}</div>;
+    return (
+      <div className="text-left" title={rowData?.email}>
+        {rowData?.email}
+      </div>
+    );
   };
   const renderColContact = (rowData) => {
-    return <div className="text-left">{rowData.contact}</div>;
+    return (
+      <div className="text-left" title={rowData?.contact}>
+        {rowData?.contact}
+      </div>
+    );
   };
   const renderColIndustry = (rowData) => {
-    return <div className="text-left">{rowData.industry}</div>;
+    return (
+      <div
+        className="text-left"
+        title={getInitialLetterUpperCase(rowData?.industry)}
+      >
+        {getInitialLetterUpperCase(rowData?.industry) ?? "-"}
+      </div>
+    );
   };
+
+  const renderStatusFilter = (options) => {
+    return (
+      <Dropdown
+        className="p-column-filter p-[2px] text-sm"
+        placeholder="Filter"
+        style={{ minWidth: "64px" }}
+        itemTemplate={(option) => <div className="px-1 text-xs">{option}</div>}
+        options={["Active", "Inactive"]}
+        onChange={(e) => {
+          options.filterApplyCallback(e.value);
+        }}
+        value={options.value}
+      />
+    );
+  };
+
   const renderColStatus = (rowData) => {
     return (
       <div className="w-10 h-4 status-switch">
@@ -211,10 +228,11 @@ const PageSpeakerPanel = () => {
 
         <button
           onClick={(e) => {
-            onDeleteSpeaker(e, rowData);
+            onPreviewSpeaker(e, rowData);
           }}
         >
-          <i className="pi pi-trash text-red-500 cursor-pointer"></i>
+          {/* <i className="pi pi-trash text-red-500 cursor-pointer"></i> */}
+          <i className="pi pi-eye cursor-pointer"></i>
         </button>
       </div>
     );
@@ -295,6 +313,11 @@ const PageSpeakerPanel = () => {
                   header="Status"
                   headerClassName="h-12 table-header"
                   body={renderColStatus}
+                  filter
+                  filterMenuStyle={{ width: "64px" }}
+                  style={{ minWidth: "64px", padding: "4px" }}
+                  filterElement={renderStatusFilter}
+                  showFilterMenu={false}
                 />
                 <Column
                   header="Action"
@@ -345,33 +368,70 @@ const PageSpeakerPanel = () => {
       </Dialog>
 
       <Dialog
-        className="w-[278px] p-5 bg-primary-bg-section gap-5"
-        visible={isDeleteDialogVisible}
-        header={`Delete Speaker`}
+        className="w-[60%] max-h-[540px] p-5 bg-primary-bg-section gap-5"
+        visible={isSpeakerPreviewVisible}
+        header={`Speaker Details`}
         headerClassName="text-primary-pLabel text-[1rem]"
-        onHide={hideDeleteDialog}
+        onHide={hideSpeakerPreviewDialog}
       >
         {currentRowInfo?.id ? (
-          <div className="flex flex-col gap-5 text-xs text-primary-pText">
-            <div className="flex gap-2 items-center">
-              <i className="text-[32px] pi pi-exclamation-triangle"></i>
-              <span>Do you want to delete this record?</span>
+          <div className="p-2 grid grid-cols-4 gap-5 text-primary-pText">
+            <div className="col-span-2">
+              <div className="text-primary-pLabel font-bold">
+                <span>Name</span>
+              </div>
+              <div>
+                <span>
+                  {getInitialLetterUpperCase(currentRowInfo?.name) ?? "-"}
+                </span>
+              </div>
             </div>
-            <div className="h-7 border-none font-bold text-right">
-              <ButtonCustom
-                containerClassName="!inline-block"
-                className="inline-flex font-bold items-center justify-center pop-up-btn-no"
-                label={"No"}
-                handleClick={hideDeleteDialog}
-              />
 
-              <ButtonCustom
-                containerClassName="!inline-block"
-                className="inline-flex font-bold items-center justify-center pop-up-btn-yes pop-up-btn-del"
-                label={"Yes"}
-                handleClickWithLoader={onAcceptDeleteSpeaker}
-                callbackSuccess={hideDeleteDialog}
-              />
+            <div className="col-span-2">
+              <div className="text-primary-pLabel font-bold">
+                <span>Industry</span>
+              </div>
+              <div>
+                <span>
+                  {getInitialLetterUpperCase(currentRowInfo?.industry) ?? "-"}
+                </span>
+              </div>
+            </div>
+
+            <div className="col-span-2">
+              <div className="text-primary-pLabel font-bold">
+                <span>Email</span>
+              </div>
+              <div>
+                <span>{currentRowInfo?.email ?? "-"}</span>
+              </div>
+            </div>
+
+            <div className="col-span-2">
+              <div className="text-primary-pLabel font-bold">
+                <span>Contact</span>
+              </div>
+              <div>
+                <span>{currentRowInfo?.contact ?? "-"}</span>
+              </div>
+            </div>
+
+            <div className="col-span-4">
+              <div className="text-primary-pLabel font-bold">
+                <span>Speaker Status</span>
+              </div>
+              <div>
+                <span>{currentRowInfo?.status ?? "-"}</span>
+              </div>
+            </div>
+
+            <div className="col-span-4">
+              <div className="text-primary-pLabel font-bold">
+                <span>Bio</span>
+              </div>
+              <div>
+                <span>{currentRowInfo?.bio ?? "-"}</span>
+              </div>
             </div>
           </div>
         ) : null}

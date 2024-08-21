@@ -61,7 +61,6 @@ const PageWebsiteConfig = () => {
   const handleWebsiteDropdownChange = (e) => {
     setSelectedWebsite(e.target.value);
     setShowSelectWebsiteError(false);
-    console.log(webinarToWebsiteMap[e.target.value]);
     setWebinarList(webinarToWebsiteMap[e.target.value]);
   };
 
@@ -129,7 +128,8 @@ const PageWebsiteConfig = () => {
   const renderAvailableWebinars = () => {
     return (
       <React.Fragment>
-        <div>
+        <div className="w-full">
+          <div className="mb-5 font-bold text-primary-pLabel">Webinars</div>
           <ul className="p-6 flex flex-col justify-center gap-2 border border-primary-light-900 rounded-md list-none text-sm">
             {webinarList?.length ? (
               webinarList?.map((webinar, idx) => (
@@ -188,11 +188,11 @@ const PageWebsiteConfig = () => {
           <div className="flex flex-col items-end gap-5 text-primary-pText">
             <div>
               <button
-                className="w-32 h-6 py-3 flex items-center justify-center gap-2 bg-secondary-bg-btnExtraLight text-primary-pTextLight border border-primary-light-900 rounded-full"
+                className="max-w-fit h-6 py-3 px-4 flex items-center justify-center gap-2 bg-secondary-bg-btnExtraLight text-primary-pTextLight border border-primary-light-900 rounded-full"
                 onClick={onAddWebsite}
               >
                 <i className="pi pi-plus w-4 h-4"></i>
-                <span className="text-sm">Add</span>
+                <span className="text-sm">Add Website</span>
               </button>
             </div>
 

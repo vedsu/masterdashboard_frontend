@@ -32,35 +32,35 @@ const AppLayout = () => {
   const sideMenuNavLinks = [
     {
       key: "WEBINAR",
-      label: "Webinar",
+      label: "Webinar Panel",
       icon: "",
       destinationRoute: LINK_WEBINAR,
       isActive: location.pathname.includes(LINK_WEBINAR),
     },
     {
       key: "SPEAKER",
-      label: "Speaker",
+      label: "Speaker Panel",
       icon: "",
       destinationRoute: LINK_SPEAKER,
       isActive: location.pathname.includes(LINK_SPEAKER),
     },
     {
       key: "ORDER",
-      label: "Order",
+      label: "Order Panel",
       icon: "",
       destinationRoute: LINK_ORDER,
       isActive: location.pathname.includes(LINK_ORDER),
     },
     {
       key: "INDUSTRY",
-      label: "Industry",
+      label: "Industry Panel",
       icon: "",
       destinationRoute: LINK_INDUSTRY,
       isActive: location.pathname.includes(LINK_INDUSTRY),
     },
     {
       key: "WEBSITE",
-      label: "Website",
+      label: "Website Panel",
       icon: "",
       destinationRoute: LINK_WEBSITE,
       isActive: location.pathname.includes(LINK_WEBSITE),
@@ -86,7 +86,7 @@ const AppLayout = () => {
                 <li key={navLink.key} className="side-nav-item mt-3">
                   <Link
                     to={navLink.destinationRoute}
-                    className={`flex m-1 justify-center  text-white ${
+                    className={`flex m-1 pl-6 justify-start  text-white ${
                       navLink.isActive
                         ? "ring-[0.5px] ring-primary-light-900 bg-[#1c354e]"
                         : ""
@@ -100,7 +100,7 @@ const AppLayout = () => {
 
             <button
               type="button"
-              className="my-5 mx-1 text-center flex items-center justify-center hover:bg-[#1c354e] hover:ring-[0.5px] hover:ring-primary-light-900 hover:border-primary-light-900 relative"
+              className="my-5 mx-1 pl-6 flex items-center justify-start hover:bg-[#1c354e] hover:ring-[0.5px] hover:ring-primary-light-900 hover:border-primary-light-900 relative"
               onClick={onLogout}
             >
               <span>Logout</span>

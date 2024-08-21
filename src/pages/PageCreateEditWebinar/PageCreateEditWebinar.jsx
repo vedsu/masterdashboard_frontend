@@ -621,11 +621,10 @@ const PageCreateEditWebinar = () => {
           <div className="flex flex-col gap-2">
             <label>Description</label>
             <InputTextarea
-              className="description-box min-h-52 max-h-40 p-2 border border-primary-light-900 text-primary-pText text-sm"
+              className="description-box min-h-[720px]  p-2 border border-primary-light-900 text-primary-pText text-sm"
               name="description"
               value={webinarInfo.description}
               onChange={handleChange}
-              maxLength={1000}
             />
             <small></small>
           </div>
@@ -637,10 +636,10 @@ const PageCreateEditWebinar = () => {
   return (
     <div>
       <div className="create-webinar-wrapper flex flex-col items-center gap-5">
-        <div className="w-full flex items-center justify-between">
-          <div className="font-bold text-primary-pLabel ">
+        <div className="w-full">
+          <div className="flex items-center gap-4 font-bold text-primary-pLabel ">
             <button
-              className="inline-block mr-4 w-8 h-8 border rounded-[50%] text-center hover:bg-primary-light-100"
+              className="w-8 h-8 border rounded-[50%] text-center hover:bg-primary-light-100"
               onClick={() => {
                 navigate(LINK_WEBINAR);
               }}

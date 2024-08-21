@@ -41,6 +41,31 @@ button:focus-visible {
   background: #fdfeff;
 }
 
+/*------------------------Scroll Bar-----------------------*/
+
+/* webkit css for scrollbar in chrome and safari browser */
+/* width */
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5687b8;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1d568f;
+}
+
 /*---------------------------Table-------------------------*/
 
 .p-column-header-content {

@@ -4,8 +4,8 @@ import Input from "../../components/Input";
 import InputPasswordCustom from "../../components/InputPassword";
 import { LINK_WEBINAR } from "../../routes";
 import LoginService from "../../services/LoginService";
-import "./PageLogin.css";
 import { validatePostRequest } from "../../utils/commonUtils";
+import "./PageLogin.css";
 
 const initialFormData = {
   email: "",
@@ -73,7 +73,7 @@ const PageLogin = () => {
               label={"Email"}
               name="email"
               type="email"
-              placeholder="Enter email"
+              placeholder="Enter Email"
               value={loginFormData.email}
               handler={handleLoginFormChange}
             />

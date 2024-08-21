@@ -6,7 +6,6 @@ const DEFAULT_PATH =
 class FileUploadService extends BaseApiService {
   upload = (endPoint, payload) => {
     const path = DEFAULT_PATH + `/${endPoint}`;
-    console.log(endPoint, payload);
     return this.makePutRequest(path, payload);
   };
 }

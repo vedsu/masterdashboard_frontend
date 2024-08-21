@@ -137,7 +137,9 @@ const PageCreateCategory = () => {
   const renderAvailableCategories = () => {
     return (
       <React.Fragment>
-        <div>
+        <div className="w-full">
+          <div className="mb-5 font-bold text-primary-pLabel">Categories</div>
+
           <ul className="p-6 flex flex-col justify-center gap-2 border border-primary-light-900 rounded-md list-none text-sm">
             {categoryList?.length ? (
               categoryList?.map((category, idx) => (
@@ -196,11 +198,14 @@ const PageCreateCategory = () => {
           <div className="flex flex-col items-end gap-5 text-primary-pText">
             <div>
               <button
-                className="w-32 h-6 py-3 flex items-center justify-center gap-2 bg-secondary-bg-btnExtraLight text-primary-pTextLight border border-primary-light-900 rounded-full"
+                className={`max-w-fit h-6 py-3 px-4 flex items-center justify-center gap-2 bg-secondary-bg-btnExtraLight text-primary-pTextLight border border-primary-light-900 rounded-full ${
+                  !industry ? "!bg-disabled !text-secondary-sText" : ""
+                }`}
                 onClick={onAddCategory}
+                disabled={!industry}
               >
                 <i className="pi pi-plus w-4 h-4"></i>
-                <span className="text-sm">Add</span>
+                <span className="text-sm">Add Category</span>
               </button>
             </div>
 
