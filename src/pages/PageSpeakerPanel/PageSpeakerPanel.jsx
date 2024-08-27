@@ -274,8 +274,8 @@ const PageSpeakerPanel = () => {
                 header={renderHeader()}
                 stripedRows
                 paginator
-                rows={10}
-                rowsPerPageOptions={[10, 20, 30, 40, 50]}
+                rows={50}
+                rowsPerPageOptions={[50, 100, 150, 200]}
                 removableSort
                 filters={filters}
                 filterDisplay="row"

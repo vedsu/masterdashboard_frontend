@@ -327,8 +327,8 @@ const PageWebinarPanel = () => {
                 header={renderHeader()}
                 stripedRows
                 paginator
-                rows={10}
-                rowsPerPageOptions={[10, 20, 30, 40, 50]}
+                rows={50}
+                rowsPerPageOptions={[50, 100, 150, 200]}
                 removableSort
                 filters={filters}
                 filterDisplay="row"
@@ -475,30 +475,30 @@ const PageWebinarPanel = () => {
                 <div className="col-span-8">
                   <div className="w-full flex items-center justify-between">
                     <div className="text-primary-pLabel font-bold">
-                      Session Recording :
+                      Session DD :
                       <span className="px-1 font-normal">
-                        {currentSessionTypeInfo?.sessionRecording === true
+                        {currentSessionTypeInfo?.sessionDigitalDownload === true
                           ? "Yes"
                           : "No"}
                       </span>
                     </div>
 
                     <div className="text-primary-pLabel font-bold">
-                      Price Recording ($) :
+                      Price DD ($) :
                       <span className="px-1 font-normal">
-                        {currentSessionTypeInfo?.priceRecording}
+                        {currentSessionTypeInfo?.priceDigitalDownload}
                       </span>
                     </div>
                   </div>
 
                   <div className="w-full text-primary-pLabel font-bold">
-                    URL Recording :
+                    URL DD :
                     <a
                       className="px-1 font-normal text-primary-bg-blue"
-                      href={currentSessionTypeInfo?.urlRecording}
+                      href={currentSessionTypeInfo?.urlDigitalDownload}
                       target="_blank"
                     >
-                      {currentSessionTypeInfo?.urlRecording}
+                      {currentSessionTypeInfo?.urlDigitalDownload}
                     </a>
                   </div>
                 </div>

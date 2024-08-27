@@ -2,12 +2,14 @@ import { FilterMatchMode } from "primereact/api";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { Dropdown } from "primereact/dropdown";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
 import React, { useCallback, useEffect, useState } from "react";
 import Section from "../../components/Section";
+import { paymentStatusEnum } from "../../constants/enums";
 import OrderService from "../../services/OrderService";
 import {
   getInitialLetterUpperCase,
@@ -20,10 +22,11 @@ const PageOrderPanel = () => {
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    email: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    contact: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    industry: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    topic: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    customeremail: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    orderamount: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    orderdate: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    paymentstatus: { value: null, matchMode: FilterMatchMode.EQUALS },
   });
 
   const [currentRowInfo, setCurrentRowInfo] = useState(null);
@@ -33,7 +36,6 @@ const PageOrderPanel = () => {
 
   const globalFilterFieldsStructure = [
     "orderdate",
-    "webinardate",
     "topic",
     "paymentstatus",
     "customeremail",
@@ -134,6 +136,21 @@ const PageOrderPanel = () => {
       </div>
     );
   };
+  const renderPaymentStatusFilter = (options) => {
+    return (
+      <Dropdown
+        className="p-column-filter p-[2px] text-sm"
+        placeholder="Filter"
+        style={{ minWidth: "64px" }}
+        itemTemplate={(option) => <div className="px-1 text-xs">{option}</div>}
+        options={[paymentStatusEnum.pending, paymentStatusEnum.purchased]}
+        onChange={(e) => {
+          options.filterApplyCallback(e.value);
+        }}
+        value={options.value}
+      />
+    );
+  };
   const renderColPaymentStatus = (rowData) => {
     return (
       <div className="text-left">
@@ -199,8 +216,8 @@ const PageOrderPanel = () => {
                 header={renderHeader()}
                 stripedRows
                 paginator
-                rows={10}
-                rowsPerPageOptions={[10, 20, 30, 40, 50]}
+                rows={50}
+                rowsPerPageOptions={[50, 100, 150, 200]}
                 removableSort
                 filters={filters}
                 filterDisplay="row"
@@ -238,6 +255,11 @@ const PageOrderPanel = () => {
                   header="Payment"
                   headerClassName="h-12 table-header"
                   body={renderColPaymentStatus}
+                  filter
+                  filterMenuStyle={{ width: "64px" }}
+                  showFilterMenu={false}
+                  style={{ minWidth: "64px", padding: "4px" }}
+                  filterElement={renderPaymentStatusFilter}
                 />
                 <Column
                   field="orderamount"

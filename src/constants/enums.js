@@ -3,6 +3,11 @@ export const statusEnum = Object.freeze({
   inactive: "Inactive",
 });
 
+export const paymentStatusEnum = Object.freeze({
+  pending: "Pending",
+  purchased: "Purchased",
+});
+
 export const PAGE_MODE = Object.freeze({
   CREATE: "CREATE",
   EDIT: "EDIT",
