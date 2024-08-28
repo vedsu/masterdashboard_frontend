@@ -1,13 +1,7 @@
-import AppLayout from "./layouts/AppLayout";
-import PageCreateCategory from "./pages/PageCreateCategory/PageCreateCategory";
-import PageCreateEditSpeaker from "./pages/PageCreateEditSpeaker";
-import PageCreateEditWebinar from "./pages/PageCreateEditWebinar";
-import PageLogin from "./pages/PageLogin/PageLogin";
-import PageOrderPanel from "./pages/PageOrderPanel/PageOrderPanel";
-import PageSpeakerPanel from "./pages/PageSpeakerPanel";
+/* eslint-disable react-refresh/only-export-components */
+import { lazy, Suspense } from "react";
+import Loader from "./components/Loader";
 import PageUnauthorizeError from "./pages/PageUnauthorizeError";
-import PageWebinarPanel from "./pages/PageWebinarPanel";
-import PageWebsiteConfig from "./pages/PageWebsiteConfig/PageWebsiteConfig";
 
 export const LINK_ROOT = "/";
 export const LINK_DASHBOARD = "/dashboard";
@@ -24,38 +18,86 @@ export const LINK_ORDER = LINK_DASHBOARD + "/order";
 export const LINK_INDUSTRY = LINK_DASHBOARD + "/industry";
 export const LINK_WEBSITE = LINK_DASHBOARD + "/website";
 
+// dynamic imports for code splitting
+
+const AppLayout = lazy(() => import("./layouts/AppLayout"));
+const PageLogin = lazy(() => import("./pages/PageLogin"));
+const PageWebinarPanel = lazy(() => import("./pages/PageWebinarPanel"));
+const PageSpeakerPanel = lazy(() => import("./pages/PageSpeakerPanel"));
+const PageOrderPanel = lazy(() => import("./pages/PageOrderPanel"));
+const PageCreateEditWebinar = lazy(() =>
+  import("./pages/PageCreateEditWebinar")
+);
+const PageCreateEditSpeaker = lazy(() =>
+  import("./pages/PageCreateEditSpeaker")
+);
+const PageCreateCategory = lazy(() => import("./pages/PageCreateCategory"));
+const PageWebsiteConfig = lazy(() => import("./pages/PageWebsiteConfig"));
+
 const appChildrenRoutes = [
   {
     path: LINK_WEBINAR,
-    element: <PageWebinarPanel />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageWebinarPanel />
+      </Suspense>
+    ),
   },
   {
     path: LINK_SPEAKER,
-    element: <PageSpeakerPanel />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageSpeakerPanel />
+      </Suspense>
+    ),
   },
   {
     path: LINK_ORDER,
-    element: <PageOrderPanel />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageOrderPanel />
+      </Suspense>
+    ),
   },
   {
     path: LINK_CREATE_WEBINAR,
-    element: <PageCreateEditWebinar />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageCreateEditWebinar />
+      </Suspense>
+    ),
   },
   {
     path: `${LINK_EDIT_WEBINAR}/:webinarId`,
-    element: <PageCreateEditWebinar />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageCreateEditWebinar />
+      </Suspense>
+    ),
   },
   {
     path: LINK_CREATE_SPEAKER,
-    element: <PageCreateEditSpeaker />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageCreateEditSpeaker />
+      </Suspense>
+    ),
   },
   {
     path: `${LINK_EDIT_SPEAKER}/:speakerId`,
-    element: <PageCreateEditSpeaker />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageCreateEditSpeaker />
+      </Suspense>
+    ),
   },
   {
     path: `${LINK_INDUSTRY}`,
-    element: <PageCreateCategory />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageCreateCategory />
+      </Suspense>
+    ),
   },
   {
     path: `${LINK_WEBSITE}`,
@@ -66,12 +108,20 @@ const appChildrenRoutes = [
 const routes = [
   {
     path: LINK_ROOT,
-    element: <PageLogin />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageLogin />
+      </Suspense>
+    ),
     errorElement: <PageUnauthorizeError />,
   },
   {
     path: LINK_DASHBOARD,
-    element: <AppLayout />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <AppLayout />
+      </Suspense>
+    ),
     children: appChildrenRoutes,
   },
 ];

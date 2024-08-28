@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import InputPasswordCustom from "../../components/InputPassword";
+import Loader from "../../components/Loader";
 import { LINK_WEBINAR } from "../../routes";
 import LoginService from "../../services/LoginService";
 import { validatePostRequest } from "../../utils/commonUtils";
@@ -59,6 +60,12 @@ const PageLogin = () => {
       }
     }
   };
+
+  return (
+    <div>
+      <Loader />
+    </div>
+  );
 
   return (
     <div className="login-container">
