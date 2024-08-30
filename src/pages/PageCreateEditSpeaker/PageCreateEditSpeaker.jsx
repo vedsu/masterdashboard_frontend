@@ -195,11 +195,9 @@ const PageCreateSpeaker = () => {
       email: speakerInfo.email,
       industry: speakerInfo.industry,
       contact: speakerInfo.contact,
-      countryCode: null,
       bio: speakerInfo.speakerBio,
       photo: speakerInfo.imageInfo,
     };
-
     if (speakerInfo.id) {
       payloadObj.id = speakerInfo.id;
     }
@@ -260,7 +258,7 @@ const PageCreateSpeaker = () => {
               className="app-phn-input gap-2 text-sm rounded-md"
               name={"contact"}
               country
-              defaultCountry="IN"
+              defaultCountry="US"
               placeholder="Enter phone number"
               value={speakerInfo.contact}
               // onCountryChange={(country) => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getEnvVariableValues } from "../utils/commonUtils";
 
-const BASE_URL = `${getEnvVariableValues("VITE_BASE_API")}` + "/employee";
+const BASE_URL = `${getEnvVariableValues("VITE_BASE_API")}`;
 
 class BaseApiService {
   constructor() {}
