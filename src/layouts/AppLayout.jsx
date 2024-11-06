@@ -9,13 +9,13 @@ import { primeReactConfigOptions } from "../constants/primeReact";
 import {
   LINK_DASHBOARD,
   LINK_INDUSTRY,
+  LINK_NEWSLETTER,
   LINK_ORDER,
   LINK_ROOT,
   LINK_SPEAKER,
   LINK_WEBINAR,
   LINK_WEBSITE,
 } from "../routes";
-import "../styles/appLayout.css";
 
 const AppLayout = () => {
   const location = useLocation();
@@ -32,35 +32,42 @@ const AppLayout = () => {
   const sideMenuNavLinks = [
     {
       key: "WEBINAR",
-      label: "Webinar Panel",
+      label: "Webinar",
       icon: "",
       destinationRoute: LINK_WEBINAR,
       isActive: location.pathname.includes(LINK_WEBINAR),
     },
     {
       key: "SPEAKER",
-      label: "Speaker Panel",
+      label: "Speaker",
       icon: "",
       destinationRoute: LINK_SPEAKER,
       isActive: location.pathname.includes(LINK_SPEAKER),
     },
     {
+      key: "NEWSLETTER",
+      label: "Newsletter",
+      icon: "",
+      destinationRoute: LINK_NEWSLETTER,
+      isActive: location.pathname.includes(LINK_NEWSLETTER),
+    },
+    {
       key: "ORDER",
-      label: "Order Panel",
+      label: "Order",
       icon: "",
       destinationRoute: LINK_ORDER,
       isActive: location.pathname.includes(LINK_ORDER),
     },
     {
       key: "INDUSTRY",
-      label: "Industry Panel",
+      label: "Industry",
       icon: "",
       destinationRoute: LINK_INDUSTRY,
       isActive: location.pathname.includes(LINK_INDUSTRY),
     },
     {
       key: "WEBSITE",
-      label: "Website Panel",
+      label: "Website",
       icon: "",
       destinationRoute: LINK_WEBSITE,
       isActive: location.pathname.includes(LINK_WEBSITE),

@@ -14,6 +14,9 @@ export const LINK_SPEAKER = LINK_DASHBOARD + "/speaker";
 export const LINK_CREATE_SPEAKER = LINK_SPEAKER + "/create-speaker";
 export const LINK_EDIT_SPEAKER = LINK_SPEAKER + "/edit-speaker";
 
+export const LINK_NEWSLETTER = LINK_DASHBOARD + "/newsletter";
+export const LINK_CREATE_NEWSLETTER = LINK_NEWSLETTER + "/create-newsletter";
+
 export const LINK_ORDER = LINK_DASHBOARD + "/order";
 export const LINK_INDUSTRY = LINK_DASHBOARD + "/industry";
 export const LINK_WEBSITE = LINK_DASHBOARD + "/website";
@@ -24,6 +27,7 @@ const AppLayout = lazy(() => import("./layouts/AppLayout"));
 const PageLogin = lazy(() => import("./pages/PageLogin"));
 const PageWebinarPanel = lazy(() => import("./pages/PageWebinarPanel"));
 const PageSpeakerPanel = lazy(() => import("./pages/PageSpeakerPanel"));
+const PageNewsletterPanel = lazy(() => import("./pages/PageNewsletterPanel"));
 const PageOrderPanel = lazy(() => import("./pages/PageOrderPanel"));
 const PageCreateEditWebinar = lazy(() =>
   import("./pages/PageCreateEditWebinar")
@@ -31,6 +35,7 @@ const PageCreateEditWebinar = lazy(() =>
 const PageCreateEditSpeaker = lazy(() =>
   import("./pages/PageCreateEditSpeaker")
 );
+const PageCreateNewsletter = lazy(() => import("./pages/PageCreateNewsletter"));
 const PageCreateCategory = lazy(() => import("./pages/PageCreateCategory"));
 const PageWebsiteConfig = lazy(() => import("./pages/PageWebsiteConfig"));
 
@@ -48,6 +53,14 @@ const appChildrenRoutes = [
     element: (
       <Suspense fallback={<Loader />}>
         <PageSpeakerPanel />
+      </Suspense>
+    ),
+  },
+  {
+    path: LINK_NEWSLETTER,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageNewsletterPanel />
       </Suspense>
     ),
   },
@@ -80,6 +93,14 @@ const appChildrenRoutes = [
     element: (
       <Suspense fallback={<Loader />}>
         <PageCreateEditSpeaker />
+      </Suspense>
+    ),
+  },
+  {
+    path: LINK_CREATE_NEWSLETTER,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <PageCreateNewsletter />
       </Suspense>
     ),
   },

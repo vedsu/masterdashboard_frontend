@@ -10,66 +10,64 @@ import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Toast } from "primereact/toast";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ButtonCustom from "../../components/ButtonCustom";
 import Section from "../../components/Section";
 import { PAGE_MODE, statusEnum } from "../../constants/enums";
-import { LINK_CREATE_SPEAKER, LINK_EDIT_SPEAKER } from "../../routes";
-import SpeakerService from "../../services/SpeakerService";
+import { LINK_CREATE_NEWSLETTER } from "../../routes";
+import NewsletterService from "../../services/NewsletterService";
 import {
+  ddmmyy,
   getInitialLetterUpperCase,
   validateGetRequest,
   validatePostRequest,
 } from "../../utils/commonUtils";
 
-const PageSpeakerPanel = () => {
-  const navigate = useNavigate();
-
+const PageNewsletterPanel = () => {
   const [tableData, setTableData] = useState([]);
   const [isTableDataLoading, setIsTableDataLoading] = useState(true);
+  const [isStatusDialogVisible, setIsStatusDialogVisible] = useState(false);
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    email: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    contact: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    industry: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    topic: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    category: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    website: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    price: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
   });
-
   const [currentRowInfo, setCurrentRowInfo] = useState(null);
-
-  const [isStatusDialogVisible, setIsStatusDialogVisible] = useState(false);
-  const [isSpeakerPreviewVisible, setIsSpeakerPreviewVisible] = useState(false);
+  const [isNewsletterPreviewVisible, setIsNewsletterPreviewVisible] =
+    useState(false);
 
   const toast = useRef(null);
 
   const globalFilterFieldsStructure = [
-    "name",
-    "email",
-    "contact",
-    "industry",
+    "topic",
+    "category",
+    "website",
+    "price",
     "status",
   ];
 
   const onMount = useCallback(async () => {
-    getSpeakerInfo();
+    getNewsletterInfo();
   }, []);
 
   useEffect(() => {
     onMount();
   }, [onMount]);
 
-  const getSpeakerInfo = async () => {
+  const getNewsletterInfo = async () => {
     setIsTableDataLoading(true);
 
     try {
-      const res = await SpeakerService.getSpeaker("");
+      const res = await NewsletterService.getNewsletter("");
 
       if (validateGetRequest(res)) {
-        const speakers = res?.data;
-        if (Array.isArray(speakers) && speakers.length > 0)
-          setTableData(speakers);
+        const newsletters = res?.data;
+        if (Array.isArray(newsletters) && newsletters.length > 0)
+          setTableData(newsletters);
         else setTableData([]);
         setIsTableDataLoading(false);
       }
@@ -80,7 +78,7 @@ const PageSpeakerPanel = () => {
     }
   };
 
-  const updateStatusOfSpeaker = async () => {
+  const updateStatusOfNewsletter = async () => {
     try {
       const payload = { status: currentRowInfo?.status };
       if (payload.status === statusEnum.inactive) {
@@ -88,13 +86,13 @@ const PageSpeakerPanel = () => {
       } else if (payload.status === statusEnum.active) {
         payload.status = statusEnum.inactive;
       }
-      const res = await SpeakerService.updateSpeakerStatus(
+      const res = await NewsletterService.updateNewsletterStatus(
         `${currentRowInfo?.id ? `/${currentRowInfo?.id}` : ""}`,
         payload
       );
 
       if (validatePostRequest(res)) {
-        getSpeakerInfo();
+        getNewsletterInfo();
       }
     } catch (error) {
       console.error(error);
@@ -117,27 +115,24 @@ const PageSpeakerPanel = () => {
   };
 
   const onAcceptStatusToggle = async () => {
-    await updateStatusOfSpeaker();
-  };
-
-  const onEditSpeaker = (rowData) => {
-    navigate(`${LINK_EDIT_SPEAKER}/${rowData.id}?mode=${PAGE_MODE.EDIT}`);
-  };
-
-  const onPreviewSpeaker = (e, rowData) => {
-    setIsSpeakerPreviewVisible(true);
-    setCurrentRowInfo(rowData);
+    await updateStatusOfNewsletter();
   };
 
   const hideStatusDialog = () => {
     setIsStatusDialogVisible(false);
   };
 
-  const hideSpeakerPreviewDialog = () => {
-    setIsSpeakerPreviewVisible(false);
+  const onPreviewNewsletter = (e, rowData) => {
+    setIsNewsletterPreviewVisible(true);
+    setCurrentRowInfo(rowData);
+  };
+
+  const hideNewsletterPreviewDialog = () => {
+    setIsNewsletterPreviewVisible(false);
   };
 
   /* table col body jsx */
+
   const renderHeader = () => {
     return (
       <div className="flex justify-content-end">
@@ -146,43 +141,44 @@ const PageSpeakerPanel = () => {
           <InputText
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder="Search Speaker"
+            placeholder="Search Newsletter"
           />
         </IconField>
       </div>
     );
   };
-  const renderColName = (rowData) => {
+
+  const renderColTopic = (rowData) => {
     return (
       <div
         className="pl-6 text-left"
-        title={getInitialLetterUpperCase(rowData?.name)}
+        title={getInitialLetterUpperCase(rowData?.topic)}
       >
-        {getInitialLetterUpperCase(rowData?.name) ?? "-"}
+        {getInitialLetterUpperCase(rowData?.topic) ?? "-"}
       </div>
     );
   };
-  const renderColEmail = (rowData) => {
+
+  const renderColCategory = (rowData) => {
     return (
-      <div className="text-left" title={rowData?.email}>
-        {rowData?.email}
+      <div className="text-left" title={rowData?.category}>
+        {getInitialLetterUpperCase(rowData?.category) ?? ""}
       </div>
     );
   };
-  const renderColContact = (rowData) => {
+
+  const renderColWebsite = (rowData) => {
     return (
-      <div className="text-left" title={rowData?.contact}>
-        {rowData?.contact}
+      <div className="text-left" title={rowData?.website}>
+        {getInitialLetterUpperCase(rowData?.website) ?? "-"}
       </div>
     );
   };
-  const renderColIndustry = (rowData) => {
+
+  const renderColPrice = (rowData) => {
     return (
-      <div
-        className="text-left"
-        title={getInitialLetterUpperCase(rowData?.industry)}
-      >
-        {getInitialLetterUpperCase(rowData?.industry) ?? "-"}
+      <div className="text-left" title={rowData?.price}>
+        {rowData?.price ?? "-"}
       </div>
     );
   };
@@ -224,16 +220,11 @@ const PageSpeakerPanel = () => {
   const renderColAction = (rowData) => {
     return (
       <div className="pr-5 flex gap-6 justify-end items-center">
-        <button onClick={() => onEditSpeaker(rowData)}>
-          <i className="pi pi-pencil text-blue-900 cursor-pointer"></i>
-        </button>
-
         <button
           onClick={(e) => {
-            onPreviewSpeaker(e, rowData);
+            onPreviewNewsletter(e, rowData);
           }}
         >
-          {/* <i className="pi pi-trash text-red-500 cursor-pointer"></i> */}
           <i className="pi pi-eye cursor-pointer"></i>
         </button>
       </div>
@@ -244,14 +235,14 @@ const PageSpeakerPanel = () => {
     <div>
       <div className="flex flex-col items-center gap-5 text-primary-pText">
         <div className="w-full flex items-center justify-between">
-          <div className="font-bold text-primary-pLabel">Speakers</div>
+          <div className="font-bold text-primary-pLabel">Newsletters</div>
 
           <div>
             <Link
-              to={`${LINK_CREATE_SPEAKER}?mode=${PAGE_MODE.CREATE}`}
+              to={`${LINK_CREATE_NEWSLETTER}?mode=${PAGE_MODE.CREATE}`}
               className="text-blue-900"
             >
-              Create Speaker
+              Create Newsletter
             </Link>
           </div>
         </div>
@@ -282,33 +273,31 @@ const PageSpeakerPanel = () => {
                 filters={filters}
                 filterDisplay="row"
                 globalFilterFields={globalFilterFieldsStructure}
-                emptyMessage="No speakers found."
-                // paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink RowsPerPageDropdown"
-                // currentPageReportTemplate="{first} to {last} of {totalRecords}"
+                emptyMessage="No newsletters found."
               >
                 <Column
-                  field="name"
-                  header="Name"
+                  field="topic"
+                  header="Topic"
                   headerClassName="h-12 table-header table-header-left"
-                  body={renderColName}
+                  body={renderColTopic}
                 />
                 <Column
-                  field="email"
-                  header="Email"
+                  field="category"
+                  header="Category"
                   headerClassName="h-12 table-header"
-                  body={renderColEmail}
+                  body={renderColCategory}
                 />
                 <Column
-                  field="contact"
-                  header="Contact"
+                  field="website"
+                  header="Website"
                   headerClassName="h-12 table-header"
-                  body={renderColContact}
+                  body={renderColWebsite}
                 />
                 <Column
-                  field="industry"
-                  header="Industry"
+                  field="price"
+                  header="Price($)"
                   headerClassName="h-12 table-header"
-                  body={renderColIndustry}
+                  body={renderColPrice}
                 />
                 <Column
                   field="status"
@@ -335,7 +324,7 @@ const PageSpeakerPanel = () => {
       <Dialog
         className="w-[278px] p-5 bg-primary-bg-section gap-5"
         visible={isStatusDialogVisible}
-        header={`Speaker Status`}
+        header={`Newsletter Status`}
         headerClassName="text-primary-pLabel text-[1rem]"
         onHide={hideStatusDialog}
       >
@@ -343,7 +332,7 @@ const PageSpeakerPanel = () => {
           <div className="flex flex-col gap-5 text-xs text-primary-pText">
             <div className="flex gap-2 items-center">
               <i className="text-[32px] pi pi-info-circle"></i>
-              <span>{`Do you want to make this speaker ${
+              <span>{`Do you want to make this newsletter ${
                 currentRowInfo?.status === statusEnum.active
                   ? "Inactive"
                   : "Active"
@@ -371,56 +360,71 @@ const PageSpeakerPanel = () => {
 
       <Dialog
         className="w-[60%] max-h-[540px] p-5 bg-primary-bg-section gap-5"
-        visible={isSpeakerPreviewVisible}
-        header={`Speaker Details`}
+        visible={isNewsletterPreviewVisible}
+        header={`Newsletter Details`}
         headerClassName="text-primary-pLabel text-[1rem]"
-        onHide={hideSpeakerPreviewDialog}
+        onHide={hideNewsletterPreviewDialog}
       >
         {currentRowInfo?.id ? (
           <div className="p-2 grid grid-cols-4 gap-5 text-primary-pText">
+            <div className="col-span-3">
+              <div className="text-primary-pLabel font-bold ">
+                <span>Thumbnail</span>
+              </div>
+              <div className="w-full h-[300px] flex place-items-center text-xs">
+                <img
+                  className="w-full h-full"
+                  src={currentRowInfo?.thumbnail}
+                  alt="newsletter-thumbnail"
+                />
+              </div>
+            </div>
+
             <div className="col-span-2">
               <div className="text-primary-pLabel font-bold">
-                <span>Name</span>
+                <span>Topic</span>
               </div>
               <div>
                 <span>
-                  {getInitialLetterUpperCase(currentRowInfo?.name) ?? "-"}
+                  {getInitialLetterUpperCase(currentRowInfo?.topic) ?? "-"}
                 </span>
               </div>
             </div>
 
             <div className="col-span-2">
               <div className="text-primary-pLabel font-bold">
-                <span>Industry</span>
+                <span>Category</span>
               </div>
               <div>
                 <span>
-                  {getInitialLetterUpperCase(currentRowInfo?.industry) ?? "-"}
+                  {getInitialLetterUpperCase(currentRowInfo?.category) ?? "-"}
                 </span>
               </div>
             </div>
 
             <div className="col-span-2">
               <div className="text-primary-pLabel font-bold">
-                <span>Email</span>
+                <span>Website</span>
               </div>
               <div>
-                <span>{currentRowInfo?.email ?? "-"}</span>
+                <span>
+                  {getInitialLetterUpperCase(currentRowInfo?.website) ?? "-"}
+                </span>
               </div>
             </div>
 
             <div className="col-span-2">
               <div className="text-primary-pLabel font-bold">
-                <span>Contact</span>
+                <span>{`Price($)`}</span>
               </div>
               <div>
-                <span>{currentRowInfo?.contact ?? "-"}</span>
+                <span>{currentRowInfo?.price ?? "-"}</span>
               </div>
             </div>
 
             <div className="col-span-4">
               <div className="text-primary-pLabel font-bold">
-                <span>Speaker Status</span>
+                <span>Newsletter Status</span>
               </div>
               <div>
                 <span>{currentRowInfo?.status ?? "-"}</span>
@@ -429,10 +433,35 @@ const PageSpeakerPanel = () => {
 
             <div className="col-span-4">
               <div className="text-primary-pLabel font-bold">
-                <span>Bio</span>
+                <span>Published Date</span>
               </div>
               <div>
-                <span>{currentRowInfo?.bio ?? "-"}</span>
+                <span>{ddmmyy(currentRowInfo?.published_date) ?? "-"}</span>
+              </div>
+            </div>
+
+            <div className="col-span-2">
+              <div className="text-primary-pLabel font-bold">
+                <span>Document</span>
+              </div>
+              <a
+                className="text-blue-600"
+                href={currentRowInfo?.document}
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+              >
+                <span>Show document</span>
+                <i className="pi pi-file-pdf"></i>
+              </a>
+            </div>
+
+            <div className="col-span-4">
+              <div className="text-primary-pLabel font-bold">
+                <span>Description</span>
+              </div>
+              <div>
+                <span>{currentRowInfo?.description ?? "-"}</span>
               </div>
             </div>
           </div>
@@ -448,4 +477,4 @@ const PageSpeakerPanel = () => {
   );
 };
 
-export default PageSpeakerPanel;
+export default PageNewsletterPanel;

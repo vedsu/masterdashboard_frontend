@@ -11,7 +11,7 @@ const initialImageUploadStates = {
 };
 
 const ProfilePicture = (props) => {
-  const { source, getFile } = props;
+  const { source, getFile, backgroundIcon } = props;
   const [uploadStatus, setUploadStatus] = useState(initialImageUploadStates);
 
   const inputRef = useRef(null);
@@ -77,7 +77,11 @@ const ProfilePicture = (props) => {
                 : "!w-72 !h-72 border rounded-md"
             }`}
             src={
-              uploadStatus.preview ? uploadStatus.preview : profilePictureIcon
+              uploadStatus.preview
+                ? uploadStatus.preview
+                : backgroundIcon
+                ? backgroundIcon
+                : profilePictureIcon
             }
           />
         )}
@@ -114,6 +118,7 @@ const ProfilePicture = (props) => {
 ProfilePicture.propTypes = {
   source: PropTypes.any,
   getFile: PropTypes.func,
+  backgroundIcon: PropTypes.string,
 };
 
 export default ProfilePicture;
