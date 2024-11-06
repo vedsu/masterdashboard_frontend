@@ -69,12 +69,6 @@ const PageOrderPanel = () => {
       if (validateGetRequest(res)) {
         const orders = res?.data;
         if (Array.isArray(orders) && orders.length > 0) {
-          // const duplicateItems = orders.filter((order) => {
-          //   if (order.id === 23) {
-          //     return order;
-          //   }
-          // });
-          // debugger;
           setTableData(orders);
         } else setTableData([]);
         setIsTableDataLoading(false);
