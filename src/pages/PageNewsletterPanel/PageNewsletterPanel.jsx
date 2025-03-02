@@ -151,7 +151,7 @@ const PageNewsletterPanel = () => {
   const renderColTopic = (rowData) => {
     return (
       <div
-        className="pl-6 text-left"
+        className="pl-6 max-w-[350px] text-left"
         title={getInitialLetterUpperCase(rowData?.topic)}
       >
         {getInitialLetterUpperCase(rowData?.topic) ?? "-"}
@@ -177,7 +177,7 @@ const PageNewsletterPanel = () => {
 
   const renderColPrice = (rowData) => {
     return (
-      <div className="text-left" title={rowData?.price}>
+      <div className="w-16 text-center" title={rowData?.price}>
         {rowData?.price ?? "-"}
       </div>
     );
@@ -201,18 +201,20 @@ const PageNewsletterPanel = () => {
 
   const renderColStatus = (rowData) => {
     return (
-      <div className="w-10 h-4 status-switch">
-        <InputSwitch
-          className="w-full h-full"
-          checked={
-            rowData.status === statusEnum.active
-              ? true
-              : rowData.status === statusEnum.inactive
-              ? false
-              : null
-          }
-          onChange={(e) => onStatusToggle(e, rowData)}
-        />
+      <div className="w-[100%] flex justify-center">
+        <div className="w-10 h-4 status-switch">
+          <InputSwitch
+            className="w-full h-full"
+            checked={
+              rowData.status === statusEnum.active
+                ? true
+                : rowData.status === statusEnum.inactive
+                ? false
+                : null
+            }
+            onChange={(e) => onStatusToggle(e, rowData)}
+          />
+        </div>
       </div>
     );
   };
@@ -461,7 +463,13 @@ const PageNewsletterPanel = () => {
                 <span>Description</span>
               </div>
               <div>
-                <span>{currentRowInfo?.description ?? "-"}</span>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      currentRowInfo?.description ??
+                      "<h4><strong>N.A</strong</h4>",
+                  }}
+                />
               </div>
             </div>
           </div>

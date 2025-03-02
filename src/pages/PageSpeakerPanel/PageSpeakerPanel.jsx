@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FilterMatchMode } from "primereact/api";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
@@ -9,7 +10,6 @@ import { InputSwitch } from "primereact/inputswitch";
 import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Toast } from "primereact/toast";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ButtonCustom from "../../components/ButtonCustom";
 import Section from "../../components/Section";
@@ -432,7 +432,12 @@ const PageSpeakerPanel = () => {
                 <span>Bio</span>
               </div>
               <div>
-                <span>{currentRowInfo?.bio ?? "-"}</span>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      currentRowInfo?.bio ?? "<h4><strong>N.A</strong</h4>",
+                  }}
+                />
               </div>
             </div>
           </div>
