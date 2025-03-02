@@ -21,3 +21,8 @@ export const WEBINAR_STATUS_INDICATOR = Object.freeze({
   LIVE: "live",
   NOT_LIVE: "notLive",
 });
+
+export const WEBINAR_OR_NEWSLETTER_INDICATOR = Object.freeze({
+  WEBINAR: "WEBINAR",
+  NEWSLETTER: "NEWSLETTER",
+});

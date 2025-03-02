@@ -9,7 +9,11 @@ import { InputText } from "primereact/inputtext";
 import { ProgressSpinner } from "primereact/progressspinner";
 import React, { useCallback, useEffect, useState } from "react";
 import Section from "../../components/Section";
-import { paymentStatusEnum } from "../../constants/enums";
+import {
+  paymentStatusEnum,
+  WEBINAR_OR_NEWSLETTER_INDICATOR,
+} from "../../constants/enums";
+import IndicatorCustom from "../../components/IndicatorCustom";
 import OrderService from "../../services/OrderService";
 import {
   getInitialLetterUpperCase,
@@ -31,6 +35,7 @@ const PageOrderPanel = () => {
 
   const [currentRowInfo, setCurrentRowInfo] = useState(null);
   const [currentRowSessionInfo, setCurrentRowSessionInfo] = useState(null);
+  const [downloadURL, setDownloadURL] = useState("#");
   const [showSessionPopUp, setShowSessionPopUp] = useState(false);
   const [showOrderDetailsPopUp, setShowOrderDetailsPopUp] = useState(false);
 
@@ -43,6 +48,15 @@ const PageOrderPanel = () => {
   ];
 
   const onMount = useCallback(async () => {
+    try {
+      const res = await OrderService.getOrderDownloadLink();
+      if (validateGetRequest(res)) {
+        setDownloadURL(res?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
     getOrderInfo();
   }, []);
 
@@ -117,6 +131,19 @@ const PageOrderPanel = () => {
     );
   };
 
+  const renderIndicator = (rowData) => {
+    return (
+      <div className="pl-6 text-left">
+        <IndicatorCustom
+          variant={
+            rowData?.webinardate
+              ? WEBINAR_OR_NEWSLETTER_INDICATOR.WEBINAR
+              : WEBINAR_OR_NEWSLETTER_INDICATOR.NEWSLETTER
+          }
+        />
+      </div>
+    );
+  };
   const renderColOrderDate = (rowData) => {
     return <div className="pl-6 text-left">{rowData?.orderdate ?? "N.A"}</div>;
   };
@@ -195,6 +222,20 @@ const PageOrderPanel = () => {
       <div className="flex flex-col items-center gap-5 text-primary-pText">
         <div className="w-full flex items-center justify-between">
           <div className="font-bold text-primary-pLabel">Orders</div>
+          <div className="flex items-center justify-center">
+            <a
+              className="submit-btn pl-8 pr-4 max-w-fit h-8 flex items-center justify-center bg-secondary-bg-btnLight text-primary-pTextLight rounded-full hover:bg-primary-bg-base-dark"
+              href={downloadURL}
+              target="_blank"
+              download
+            >
+              <span className="">Download</span>
+              <i
+                className={`pi pi-download absolute left-3`}
+                style={{ fontSize: "12px" }}
+              />
+            </a>
+          </div>
         </div>
 
         <Section>
@@ -227,6 +268,12 @@ const PageOrderPanel = () => {
                 // paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink RowsPerPageDropdown"
                 // currentPageReportTemplate="{first} to {last} of {totalRecords}"
               >
+                <Column
+                  field=""
+                  header=""
+                  headerClassName="h-12 table-header table-header-left"
+                  body={renderIndicator}
+                />
                 <Column
                   field="orderdate"
                   header="Order Date"

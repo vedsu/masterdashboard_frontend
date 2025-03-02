@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.4",
     "react-phone-number-input": "^3.4.1",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.0",
     "simple-react-validator": "^1.6.2"
   },

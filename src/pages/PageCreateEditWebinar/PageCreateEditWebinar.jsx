@@ -1,9 +1,10 @@
+import React, { useEffect, useRef, useState } from "react";
+import ReactQuill from "react-quill";
 import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
-import { InputTextarea } from "primereact/inputtextarea";
 import { Toast } from "primereact/toast";
-import React, { useEffect, useRef, useState } from "react";
+import "react-quill/dist/quill.snow.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Input from "../../components/Input";
 import Section from "../../components/Section";
@@ -617,16 +618,18 @@ const PageCreateEditWebinar = () => {
           </div>
         </div>
 
-        <div className="description-box col-span-3 grid gap-2">
+        <div className="col-span-4">
           <div className="flex flex-col gap-2">
             <label>Description</label>
-            <InputTextarea
-              className="description-box min-h-[720px]  p-2 border border-primary-light-900 text-primary-pText text-sm"
-              name="description"
-              value={webinarInfo.description}
-              onChange={handleChange}
-            />
-            <small></small>
+            <div>
+              <ReactQuill
+                theme="snow"
+                value={webinarInfo.description}
+                onChange={(val) =>
+                  setWebinarInfo((prev) => ({ ...prev, description: val }))
+                }
+              />
+            </div>
           </div>
         </div>
       </React.Fragment>

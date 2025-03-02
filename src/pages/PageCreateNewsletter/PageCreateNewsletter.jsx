@@ -1,9 +1,9 @@
+import React, { useEffect, useRef, useState } from "react";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
-import { InputTextarea } from "primereact/inputtextarea";
 import { Toast } from "primereact/toast";
-import React, { useEffect, useRef, useState } from "react";
 import "react-phone-number-input/style.css";
+import ReactQuill from "react-quill";
 import { useLocation, useNavigate } from "react-router-dom";
 import UploadThumbnailBackground from "../../assets/img/background_image_thumbnail_upload.png";
 import Input from "../../components/Input";
@@ -308,16 +308,17 @@ const PageCreateNewsletter = () => {
           </div>
         </div>
 
-        <div className="speaker-bio-box col-span-3 grid gap-2">
+        <div className="col-span-3 flex flex-col gap-2">
           <label>Description*</label>
-          <InputTextarea
-            className="speaker-bio-box min-h-[720px] p-2 border border-primary-light-900 text-primary-pText text-sm"
-            name="description"
-            placeholder="Enter description"
-            value={newsletterInfo.description}
-            onChange={handleChange}
-          />
-          <small></small>
+          <div>
+            <ReactQuill
+              theme="snow"
+              value={newsletterInfo.description}
+              onChange={(val) =>
+                setNewsletterInfo((prev) => ({ ...prev, description: val }))
+              }
+            />
+          </div>
         </div>
       </React.Fragment>
     );

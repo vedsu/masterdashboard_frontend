@@ -1,9 +1,10 @@
-import { Dropdown } from "primereact/dropdown";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
+import { Dropdown } from "primereact/dropdown";
+import { Toast } from "primereact/toast";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Input from "../../components/Input";
 import ProfilePicture from "../../components/ProfilePicture";
@@ -223,7 +224,18 @@ const PageCreateSpeaker = () => {
           </div>
         </div>
 
-        <div className="col-span-2" />
+        <div className="speaker-bio-box col-span-2 grid gap-2">
+          <div className="self-stretch">
+            <label>History</label>
+            <div className="content-disabled border border-primary-light-900  min-h-56 max-h-[400px] overflow-y-auto">
+              <ul className="p-5 list-none flex flex-col gap-2">
+                {speakerInfo.history.map((item, idx) => (
+                  <li key={idx + 1}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
 
         <div className="col-span-2">
           <Input
@@ -289,27 +301,15 @@ const PageCreateSpeaker = () => {
           </div>
         </div>
 
-        <div className="speaker-bio-box col-span-3 grid gap-2">
+        <div className="col-span-3 flex flex-col gap-2">
           <label>Speaker Bio*</label>
-          <InputTextarea
-            className="speaker-bio-box min-h-[720px] p-2 border border-primary-light-900 text-primary-pText text-sm"
-            name="speakerBio"
-            placeholder="Enter bio"
+          <ReactQuill
+            theme="snow"
             value={speakerInfo.speakerBio}
-            onChange={handleChange}
+            onChange={(val) =>
+              setSpeakerInfo((prev) => ({ ...prev, speakerBio: val }))
+            }
           />
-          <small></small>
-        </div>
-
-        <div className="speaker-bio-box col-span-3 grid gap-2">
-          <label>History</label>
-          <div className="content-disabled border border-primary-light-900 min-h-40 max-h-[400px] overflow-y-auto">
-            <ul className="p-5 list-none flex flex-col gap-2">
-              {speakerInfo.history.map((item, idx) => (
-                <li key={idx + 1}>{item}</li>
-              ))}
-            </ul>
-          </div>
         </div>
       </React.Fragment>
     );
@@ -342,31 +342,31 @@ const PageCreateSpeaker = () => {
               <form className="w-full flex flex-col gap-20" onSubmit={onSubmit}>
                 <div className="grid grid-cols-4 gap-10">
                   {renderSpeakerForm()}
-                </div>
 
-                <div className="self-center flex items-center gap-5">
-                  <div className="flex items-center justify-center">
-                    <button
-                      className="w-32 h-8 border-2 border-secondary-bg-silver rounded-full hover:bg-slate-50"
-                      type="button"
-                      onClick={() => navigate(LINK_SPEAKER)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button
-                      type="submit"
-                      className="submit-btn w-32 h-8 flex items-center justify-center bg-secondary-bg-btnLight text-primary-pTextLight rounded-full hover:bg-primary-bg-base-dark"
-                    >
-                      <span>Submit</span>
-                      {submitBtnLoader && (
-                        <i
-                          className={`pi pi-spin pi-spinner absolute right-3`}
-                          style={{ fontSize: "12px" }}
-                        ></i>
-                      )}
-                    </button>
+                  <div className="col-span-1 flex flex-col xl:flex-row items-start gap-5">
+                    <div className="flex items-center justify-center">
+                      <button
+                        className="w-32 h-8 border-2 border-secondary-bg-silver rounded-full hover:bg-slate-50"
+                        type="button"
+                        onClick={() => navigate(LINK_SPEAKER)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <button
+                        type="submit"
+                        className="submit-btn w-32 h-8 flex items-center justify-center bg-secondary-bg-btnLight text-primary-pTextLight rounded-full hover:bg-primary-bg-base-dark"
+                      >
+                        <span>Submit</span>
+                        {submitBtnLoader && (
+                          <i
+                            className={`pi pi-spin pi-spinner absolute right-3`}
+                            style={{ fontSize: "12px" }}
+                          ></i>
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </form>

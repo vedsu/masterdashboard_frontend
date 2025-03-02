@@ -32,7 +32,12 @@ const PageWebinarPanel = () => {
   const navigate = useNavigate();
 
   const [tableData, setTableData] = useState([]);
+  const [upcomingWebinarTableData, setUpcomingWebinarTableData] = useState([]);
   const [isTableDataLoading, setIsTableDataLoading] = useState(true);
+  const [
+    isUpcomingWebinarTableDataLoading,
+    setIsUpcomingWebinarTableDataLoading,
+  ] = useState(true);
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -65,6 +70,7 @@ const PageWebinarPanel = () => {
 
   const onMount = useCallback(async () => {
     getWebinarInfo();
+    getUpcomingWebinarInfo();
   }, []);
 
   useEffect(() => {
@@ -93,6 +99,26 @@ const PageWebinarPanel = () => {
     } catch (error) {
       setTableData([]);
       setIsTableDataLoading(false);
+      console.error(error);
+    }
+  };
+
+  const getUpcomingWebinarInfo = async () => {
+    setIsUpcomingWebinarTableDataLoading(true);
+
+    try {
+      const res = await WebinarService.getUpcomingWebinars("");
+
+      if (validateGetRequest(res)) {
+        const uc_webinars = res?.data ?? [];
+        if (Array.isArray(uc_webinars) && uc_webinars.length > 0)
+          setUpcomingWebinarTableData(uc_webinars);
+        else setUpcomingWebinarTableData([]);
+        setIsUpcomingWebinarTableDataLoading(false);
+      }
+    } catch (error) {
+      setUpcomingWebinarTableData([]);
+      setIsUpcomingWebinarTableDataLoading(false);
       console.error(error);
     }
   };
@@ -129,7 +155,7 @@ const PageWebinarPanel = () => {
   };
 
   const onViewSession = (e, rowData) => {
-    setCurrentSessionTypeInfo(rowData);
+    setCurrentSessionTypeInfo({ ...rowData });
   };
 
   const onStatusToggle = (e, rowData) => {
@@ -275,12 +301,15 @@ const PageWebinarPanel = () => {
       </div>
     );
   };
-  const renderColAction = (rowData) => {
+  const renderColAction = (rowData, showEditBtn = true) => {
     return (
       <div className="pr-5 flex gap-6 justify-end items-center">
-        <button onClick={() => onEditWebinar(rowData)}>
-          <i className="pi pi-pencil text-blue-900 cursor-pointer"></i>
-        </button>
+        {showEditBtn && (
+          <button onClick={() => onEditWebinar(rowData)}>
+            <i className="pi pi-pencil text-blue-900 cursor-pointer"></i>
+          </button>
+        )}
+
         <button
           onClick={(e) => {
             onWebinarPreview(e, rowData);
@@ -307,6 +336,89 @@ const PageWebinarPanel = () => {
             </Link>
           </div>
         </div>
+
+        <Section>
+          <div className="mb-2 font-semibold text-primary-pLabel">
+            Upcoming Webinars
+          </div>
+
+          {isUpcomingWebinarTableDataLoading ? (
+            <div className="flex items-center justify-center">
+              <ProgressSpinner
+                aria-label="Loading"
+                style={{ width: "50px", height: "50px" }}
+                strokeWidth="5"
+                fill="var(--surface-ground)"
+                animationDuration=".5s"
+              />
+            </div>
+          ) : (
+            <div className="app-table">
+              <DataTable
+                value={upcomingWebinarTableData}
+                dataKey="id"
+                tableStyle={{ minWidth: "50rem" }}
+                stripedRows
+                paginator
+                rows={5}
+                rowsPerPageOptions={[5, 10]}
+                emptyMessage="No webinars found."
+                // paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink RowsPerPageDropdown"
+                // currentPageReportTemplate="{first} to {last} of {totalRecords}"
+              >
+                <Column
+                  field=""
+                  header=""
+                  headerClassName="h-12 table-header table-header-left"
+                  body={renderColWebinarLiveOrNot}
+                />
+                <Column
+                  field="topic"
+                  header="Topic"
+                  headerClassName="h-12 table-header table-header-left"
+                  body={renderColTopic}
+                />
+                <Column
+                  field="speaker"
+                  header="Speaker"
+                  headerClassName="h-12 table-header"
+                  body={renderColSpeaker}
+                />
+                <Column
+                  field="category"
+                  header="Category"
+                  headerClassName="h-12 table-header"
+                  body={renderColCategory}
+                />
+                <Column
+                  field="industry"
+                  header="Industry"
+                  headerClassName="h-12 table-header"
+                  body={renderColIndustry}
+                />
+                <Column
+                  field="date"
+                  header="Date"
+                  sortable
+                  headerClassName=""
+                  body={renderColDate}
+                />
+                <Column
+                  field="sessionType"
+                  header="Session"
+                  headerClassName="h-12 table-header"
+                  body={renderColSessionType}
+                />
+                <Column
+                  header="Action"
+                  headerClassName="h-12 table-header table-header-right"
+                  body={(rowData) => renderColAction(rowData, false)}
+                />
+              </DataTable>
+            </div>
+          )}
+        </Section>
+
         <Section>
           {isTableDataLoading ? (
             <div className="flex items-center justify-center h-screen">

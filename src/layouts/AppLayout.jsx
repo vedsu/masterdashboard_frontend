@@ -15,6 +15,7 @@ import {
   LINK_SPEAKER,
   LINK_WEBINAR,
   LINK_WEBSITE,
+  LINK_COUPON,
 } from "../routes";
 
 const AppLayout = () => {
@@ -43,6 +44,13 @@ const AppLayout = () => {
       icon: "",
       destinationRoute: LINK_SPEAKER,
       isActive: location.pathname.includes(LINK_SPEAKER),
+    },
+    {
+      key: "COUPON",
+      label: "Coupon",
+      icon: "",
+      destinationRoute: LINK_COUPON,
+      isActive: location.pathname.includes(LINK_COUPON),
     },
     {
       key: "NEWSLETTER",
