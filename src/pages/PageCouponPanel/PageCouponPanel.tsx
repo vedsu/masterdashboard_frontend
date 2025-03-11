@@ -131,11 +131,8 @@ const PageCouponPanel = () => {
 
   const renderColCoupon = (rowData) => {
     return (
-      <div
-        className="pl-6 text-left"
-        title={getInitialLetterUpperCase(rowData?.coupon)}
-      >
-        {getInitialLetterUpperCase(rowData?.coupon) ?? "-"}
+      <div className="pl-6 text-left" title={rowData?.coupon}>
+        {rowData?.coupon ?? "-"}
       </div>
     );
   };

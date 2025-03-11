@@ -90,10 +90,18 @@ const PageCreateEditCoupon = () => {
   };
 
   const handleChange = (e) => {
-    setCouponInfo((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setCouponInfo((prev) => {
+      if (e.target.name === "coupon") {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value.toUpperCase(),
+        };
+      }
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
   };
 
   /*----------------------Helper Functions----------------- */

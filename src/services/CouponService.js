@@ -15,7 +15,7 @@ class CouponService extends BaseApiService {
 
   updateCoupon = (endPoint, payload) => {
     const path = DEFAULT_PATH + endPoint;
-    return this.makePutRequest(path, payload);
+    return this.makePostRequest(path, payload);
   };
 }
 
