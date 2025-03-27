@@ -4,6 +4,7 @@ import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
 import "react-phone-number-input/style.css";
 import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import UploadThumbnailBackground from "../../assets/img/background_image_thumbnail_upload.png";
 import Input from "../../components/Input";
@@ -308,16 +309,18 @@ const PageCreateNewsletter = () => {
           </div>
         </div>
 
-        <div className="col-span-3 flex flex-col gap-2">
-          <label>Description*</label>
-          <div>
-            <ReactQuill
-              theme="snow"
-              value={newsletterInfo.description}
-              onChange={(val) =>
-                setNewsletterInfo((prev) => ({ ...prev, description: val }))
-              }
-            />
+        <div className="col-span-3">
+          <div className="flex flex-col gap-2">
+            <label>Description*</label>
+            <div>
+              <ReactQuill
+                theme="snow"
+                value={newsletterInfo.description}
+                onChange={(val) =>
+                  setNewsletterInfo((prev) => ({ ...prev, description: val }))
+                }
+              />
+            </div>
           </div>
         </div>
       </React.Fragment>
